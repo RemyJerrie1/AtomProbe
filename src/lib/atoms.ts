@@ -1,7 +1,7 @@
-// 解析 mp4 頂層 atom(box)順序,判斷 faststart。
-// mp4 = 一串頂層 box,每個 box header = size(4 bytes, big-endian) + type(4 bytes ASCII)。
-// size==1 → 用後續 64-bit 大小;size==0 → 延伸到檔尾。
-// 只讀 header、用 size 跳到下一個 box,所以**不需要載入整支檔**(只要前面 + 各 header)。
+// Parse the top-level mp4 atom (box) order and decide whether the file is faststart.
+// An mp4 is a flat list of top-level boxes; each box header = size (4 bytes, big-endian) + type (4 ASCII bytes).
+// size==1 → real size is the following 64-bit largesize; size==0 → box extends to end of file.
+// We only read headers and jump by size to the next box, so the whole file is never loaded — just the headers.
 
 export interface Atom {
   type: string;
@@ -14,7 +14,7 @@ export interface AtomReport {
   order: string[];
   moovIndex: number;
   mdatIndex: number;
-  /** moov 在 mdat 之前 = 已 faststart */
+  /** moov before mdat = already faststart */
   faststart: boolean;
   moovOffset: number;
   fileSize: number;
@@ -36,17 +36,17 @@ export function parseTopLevelAtoms(buf: ArrayBuffer): AtomReport {
     );
 
     if (size === 1) {
-      // 64-bit 大小(largesize),在 type 之後 8 bytes
+      // 64-bit largesize: 8 bytes right after the type field
       if (off + 16 > buf.byteLength) break;
       const high = view.getUint32(off + 8);
       const low = view.getUint32(off + 12);
       size = high * 2 ** 32 + low;
     } else if (size === 0) {
-      // 延伸到檔尾
+      // box extends to end of file
       size = buf.byteLength - off;
     }
 
-    if (size < 8) break; // 壞掉或非法 box,停止
+    if (size < 8) break; // broken / illegal box — stop
     atoms.push({ type, size, offset: off });
     off += size;
   }

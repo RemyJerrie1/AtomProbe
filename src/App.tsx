@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { parseTopLevelAtoms, humanSize, type AtomReport } from "./lib/atoms";
 import { addFaststart, setFfmpegLog } from "./lib/ffmpeg";
+import { useI18n } from "./lib/i18n";
 
 export default function App() {
+  const { lang, toggle, t } = useI18n("en");
   const [file, setFile] = useState<File | null>(null);
   const [report, setReport] = useState<AtomReport | null>(null);
   const [busy, setBusy] = useState(false);
@@ -13,6 +15,11 @@ export default function App() {
     setFfmpegLog((m) => setLog(m));
   }, []);
 
+  // Reflect language on <html> so the browser picks correct line-breaking + font fallback (CJK vs Latin).
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   async function onFile(f: File) {
     setError("");
     setReport(null);
@@ -22,7 +29,7 @@ export default function App() {
       const buf = await f.arrayBuffer();
       setReport(parseTopLevelAtoms(buf));
     } catch {
-      setError("無法解析這個檔案,請確認是 mp4。");
+      setError(t("parseError"));
     }
   }
 
@@ -30,7 +37,7 @@ export default function App() {
     if (!file) return;
     setBusy(true);
     setError("");
-    setLog("載入 ffmpeg…");
+    setLog(t("logLoad"));
     try {
       const blob = await addFaststart(file);
       const url = URL.createObjectURL(blob);
@@ -39,9 +46,9 @@ export default function App() {
       a.download = file.name.replace(/\.mp4$/i, "") + ".faststart.mp4";
       a.click();
       URL.revokeObjectURL(url);
-      setLog("完成!已下載 faststart 版本。");
+      setLog(t("logDone"));
     } catch (e) {
-      setError("re-mux 失敗:" + (e instanceof Error ? e.message : String(e)));
+      setError(t("remuxFail") + (e instanceof Error ? e.message : String(e)));
     } finally {
       setBusy(false);
     }
@@ -50,12 +57,16 @@ export default function App() {
   return (
     <main className="wrap">
       <header>
-        <h1>🔬 Atomscope</h1>
+        <div className="topbar">
+          <h1>🔬 Atomscope</h1>
+          <button className="lang" onClick={toggle} aria-label="Switch language">
+            {lang === "en" ? "中文" : "EN"}
+          </button>
+        </div>
         <p className="sub">
-          上傳 mp4 → 看 atom 順序、判斷能不能<strong>串流秒起播</strong>、一鍵加{" "}
-          <code>+faststart</code>。
+          {t("tagline")}
           <br />
-          <span className="muted">全程在你的瀏覽器跑,檔案不上傳。</span>
+          <span className="muted">{t("privacy")}</span>
         </p>
       </header>
 
@@ -65,7 +76,7 @@ export default function App() {
           accept="video/mp4,.mp4"
           onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])}
         />
-        <span>{file ? file.name : "選擇 / 拖入 .mp4"}</span>
+        <span>{file ? file.name : t("drop")}</span>
       </label>
 
       {error && <p className="error">{error}</p>}
@@ -73,9 +84,7 @@ export default function App() {
       {report && (
         <section className="report">
           <div className={`badge ${report.faststart ? "ok" : "bad"}`}>
-            {report.faststart
-              ? "✓ 已 faststart(可串流秒起播)"
-              : "✗ 未 faststart(要先載到檔尾才起播)"}
+            {report.faststart ? t("faststartOk") : t("faststartBad")}
           </div>
 
           <div className="atoms">
@@ -91,27 +100,20 @@ export default function App() {
           </div>
 
           <p className="meta">
-            頂層順序:<code>{report.order.join(" → ")}</code>
+            {t("topOrder")} <code>{report.order.join(" → ")}</code>
             <br />
-            moov 位置:offset <code>{report.moovOffset}</code> / {humanSize(report.fileSize)}
-            {report.faststart ? "(在前)" : "(在後)"}
+            {t("moovPos")} <code>{report.moovOffset}</code> / {humanSize(report.fileSize)}{" "}
+            {report.faststart ? t("inFront") : t("inBack")}
           </p>
 
           <button onClick={remux} disabled={busy}>
-            {busy
-              ? "處理中…"
-              : report.faststart
-                ? "重新 re-mux(+faststart)"
-                : "一鍵加 +faststart 並下載"}
+            {busy ? t("btnBusy") : report.faststart ? t("btnRemux") : t("btnReady")}
           </button>
           {log && <pre className="log">{log}</pre>}
         </section>
       )}
 
-      <footer className="muted">
-        原理:moov 是解封裝必需的索引,搬到檔頭 → 播放器拿到前幾 KB 就知道每個 frame 的 byte 位置 → 用
-        HTTP Range Request 只抓要播的片段、邊載邊播。<code>-c copy</code> 不重編、不損畫質。
-      </footer>
+      <footer className="muted">{t("footer")}</footer>
     </main>
   );
 }
