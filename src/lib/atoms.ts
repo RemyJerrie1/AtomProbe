@@ -28,7 +28,12 @@ export function parseTopLevelAtoms(buf: ArrayBuffer): AtomReport {
 
   while (off + 8 <= buf.byteLength) {
     let size = view.getUint32(off); // big-endian
-    const type = String.fromCharCode(bytes[off + 4], bytes[off + 5], bytes[off + 6], bytes[off + 7]);
+    const type = String.fromCharCode(
+      bytes[off + 4],
+      bytes[off + 5],
+      bytes[off + 6],
+      bytes[off + 7]
+    );
 
     if (size === 1) {
       // 64-bit 大小(largesize),在 type 之後 8 bytes

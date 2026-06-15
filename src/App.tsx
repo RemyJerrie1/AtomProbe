@@ -52,7 +52,8 @@ export default function App() {
       <header>
         <h1>🔬 Atomscope</h1>
         <p className="sub">
-          上傳 mp4 → 看 atom 順序、判斷能不能<strong>串流秒起播</strong>、一鍵加 <code>+faststart</code>。
+          上傳 mp4 → 看 atom 順序、判斷能不能<strong>串流秒起播</strong>、一鍵加{" "}
+          <code>+faststart</code>。
           <br />
           <span className="muted">全程在你的瀏覽器跑,檔案不上傳。</span>
         </p>
@@ -72,7 +73,9 @@ export default function App() {
       {report && (
         <section className="report">
           <div className={`badge ${report.faststart ? "ok" : "bad"}`}>
-            {report.faststart ? "✓ 已 faststart(可串流秒起播)" : "✗ 未 faststart(要先載到檔尾才起播)"}
+            {report.faststart
+              ? "✓ 已 faststart(可串流秒起播)"
+              : "✗ 未 faststart(要先載到檔尾才起播)"}
           </div>
 
           <div className="atoms">
@@ -95,15 +98,19 @@ export default function App() {
           </p>
 
           <button onClick={remux} disabled={busy}>
-            {busy ? "處理中…" : report.faststart ? "重新 re-mux(+faststart)" : "一鍵加 +faststart 並下載"}
+            {busy
+              ? "處理中…"
+              : report.faststart
+                ? "重新 re-mux(+faststart)"
+                : "一鍵加 +faststart 並下載"}
           </button>
           {log && <pre className="log">{log}</pre>}
         </section>
       )}
 
       <footer className="muted">
-        原理:moov 是解封裝必需的索引,搬到檔頭 → 播放器拿到前幾 KB 就知道每個 frame 的 byte 位置 →
-        用 HTTP Range Request 只抓要播的片段、邊載邊播。<code>-c copy</code> 不重編、不損畫質。
+        原理:moov 是解封裝必需的索引,搬到檔頭 → 播放器拿到前幾 KB 就知道每個 frame 的 byte 位置 → 用
+        HTTP Range Request 只抓要播的片段、邊載邊播。<code>-c copy</code> 不重編、不損畫質。
       </footer>
     </main>
   );
