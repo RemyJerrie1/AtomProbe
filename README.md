@@ -27,6 +27,20 @@ npm run dev      # 本機開發
 npm run build    # 純靜態輸出到 dist/,可上任何 CDN
 ```
 
+## 🔧 品質防線(專業基線,非玩具)
+| 防線 | 工具 / 指令 |
+|---|---|
+| 型別 | TypeScript strict(`npm run build` 含 `tsc --noEmit`) |
+| Lint | ESLint 9 flat config(`npm run lint`) |
+| 格式 | Prettier(`npm run format` / `format:check`) |
+| 單元測試 | Vitest + v8 coverage(`npm test` / `test:run`)— 涵蓋 atom 解析(faststart 判定、64-bit box) |
+| **Git hooks** | husky:**pre-commit** 跑 lint-staged(eslint --fix + prettier)、**pre-push** 跑測試 |
+| Bundle 指標 | `npm run metrics:size`(dist raw + gzip) |
+| **Lighthouse** | `npm run metrics:lhci`(Perf/SEO/A11y ≥0.9 斷言) |
+| CI | GitHub Actions:format → lint → test → build → size(每 push/PR) |
+
+> 即使是小工具,也用**和正式產品同一套品質門檻**——這就是「精緻、不是玩具」。
+
 ## 限制 / 待辦
 - 目前只解析**頂層** atom(不遞迴 box 樹)、只支援 mp4。
 - 大檔受瀏覽器記憶體限制。
