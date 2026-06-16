@@ -16,6 +16,12 @@ const dict = {
     parseError: "Could not parse this file — make sure it's an mp4.",
     faststartOk: "✓ faststart (streams / plays instantly)",
     faststartBad: "✗ not faststart (must download to the end before it plays)",
+    faststartFrag: "ℹ️ fragmented mp4 (fMP4) — already streamable",
+    fragNote:
+      "Fragmented mp4: each fragment carries its own index, so it streams already — +faststart is for non-fragmented files.",
+    remuxNA: "+faststart isn't needed for a fragmented mp4.",
+    coreLoadFail:
+      "Couldn't load the ffmpeg core (CDN fetch failed). Check your network and try again.",
     topOrder: "Top-level order:",
     moovPos: "moov position: offset",
     inFront: "(at front)",
@@ -36,6 +42,10 @@ const dict = {
     parseError: "無法解析這個檔案,請確認是 mp4。",
     faststartOk: "✓ 已 faststart(可串流秒起播)",
     faststartBad: "✗ 未 faststart(要先載到檔尾才起播)",
+    faststartFrag: "ℹ️ fragmented mp4(fMP4)—— 本來就可串流",
+    fragNote: "Fragmented mp4:每個片段自帶索引、本來就能串流;+faststart 是給非分段 mp4 用的。",
+    remuxNA: "fragmented mp4 不需要 +faststart。",
+    coreLoadFail: "無法載入 ffmpeg core(CDN 連線失敗),請檢查網路後重試。",
     topOrder: "頂層順序:",
     moovPos: "moov 位置:offset",
     inFront: "(在前)",

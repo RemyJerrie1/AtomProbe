@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { parseTopLevelAtoms, humanSize, type AtomReport } from "./lib/atoms";
+import { parseTopLevelAtoms, groupAtoms, humanSize, type AtomReport } from "./lib/atoms";
 import { addFaststart, setFfmpegLog } from "./lib/ffmpeg";
 import { useI18n } from "./lib/i18n";
 
@@ -48,7 +48,8 @@ export default function App() {
       URL.revokeObjectURL(url);
       setLog(t("logDone"));
     } catch (e) {
-      setError(t("remuxFail") + (e instanceof Error ? e.message : String(e)));
+      const msg = e instanceof Error ? e.message : String(e);
+      setError(msg === "CORE_LOAD_FAILED" ? t("coreLoadFail") : t("remuxFail") + msg);
     } finally {
       setBusy(false);
     }
@@ -81,37 +82,56 @@ export default function App() {
 
       {error && <p className="error">{error}</p>}
 
-      {report && (
-        <section className="report">
-          <div className={`badge ${report.faststart ? "ok" : "bad"}`}>
-            {report.faststart ? t("faststartOk") : t("faststartBad")}
-          </div>
+      {report &&
+        (() => {
+          const groups = groupAtoms(report.atoms);
+          // Too many distinct runs (e.g. fragmented mp4 with hundreds of moof/mdat) → show per-type
+          // counts instead of an unreadable wall of chips.
+          const tooMany = groups.length > 32;
+          const chips = tooMany
+            ? Object.entries(report.counts).map(([type, count]) => ({ type, count }))
+            : groups;
+          const orderText = chips
+            .map((g) => (g.count > 1 ? `${g.type}×${g.count}` : g.type))
+            .join(tooMany ? " · " : " → ");
+          const isKey = (ty: string) => (ty === "moov" ? "moov" : ty === "mdat" ? "mdat" : "");
+          return (
+            <section className="report">
+              {report.fragmented ? (
+                <div className="badge info">{t("faststartFrag")}</div>
+              ) : (
+                <div className={`badge ${report.faststart ? "ok" : "bad"}`}>
+                  {report.faststart ? t("faststartOk") : t("faststartBad")}
+                </div>
+              )}
 
-          <div className="atoms">
-            {report.atoms.map((a, i) => (
-              <span
-                key={i}
-                className={`atom ${a.type === "moov" ? "moov" : a.type === "mdat" ? "mdat" : ""}`}
-                title={`${a.type} · ${humanSize(a.size)} @ offset ${a.offset}`}
-              >
-                {a.type}
-              </span>
-            ))}
-          </div>
+              <div className="atoms">
+                {chips.map((g, i) => (
+                  <span key={i} className={`atom ${isKey(g.type)}`} title={`${g.type} ×${g.count}`}>
+                    {g.type}
+                    {g.count > 1 && <em className="count">×{g.count}</em>}
+                  </span>
+                ))}
+              </div>
 
-          <p className="meta">
-            {t("topOrder")} <code>{report.order.join(" → ")}</code>
-            <br />
-            {t("moovPos")} <code>{report.moovOffset}</code> / {humanSize(report.fileSize)}{" "}
-            {report.faststart ? t("inFront") : t("inBack")}
-          </p>
+              <p className="meta">
+                {t("topOrder")} <code>{orderText}</code>
+                <br />
+                {t("moovPos")} <code>{report.moovOffset}</code> / {humanSize(report.fileSize)}{" "}
+                {report.faststart ? t("inFront") : t("inBack")}
+              </p>
 
-          <button onClick={remux} disabled={busy}>
-            {busy ? t("btnBusy") : report.faststart ? t("btnRemux") : t("btnReady")}
-          </button>
-          {log && <pre className="log">{log}</pre>}
-        </section>
-      )}
+              {report.fragmented ? (
+                <p className="muted">{t("fragNote")}</p>
+              ) : (
+                <button onClick={remux} disabled={busy}>
+                  {busy ? t("btnBusy") : report.faststart ? t("btnRemux") : t("btnReady")}
+                </button>
+              )}
+              {log && <pre className="log">{log}</pre>}
+            </section>
+          );
+        })()}
 
       <footer className="muted">{t("footer")}</footer>
     </main>

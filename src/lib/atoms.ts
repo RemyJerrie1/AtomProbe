@@ -18,6 +18,21 @@ export interface AtomReport {
   faststart: boolean;
   moovOffset: number;
   fileSize: number;
+  /** fragmented mp4 (fMP4): has moof boxes → already streamable, +faststart doesn't apply */
+  fragmented: boolean;
+  /** count per atom type, e.g. { ftyp: 1, moov: 1, moof: 247, mdat: 247 } */
+  counts: Record<string, number>;
+}
+
+/** Run-length encode consecutive identical atom types: [ftyp, moof, mdat, moof, mdat] → keeps order but collapses runs. */
+export function groupAtoms(atoms: Atom[]): { type: string; count: number }[] {
+  const groups: { type: string; count: number }[] = [];
+  for (const a of atoms) {
+    const last = groups[groups.length - 1];
+    if (last && last.type === a.type) last.count++;
+    else groups.push({ type: a.type, count: 1 });
+  }
+  return groups;
 }
 
 export function parseTopLevelAtoms(buf: ArrayBuffer): AtomReport {
@@ -57,6 +72,11 @@ export function parseTopLevelAtoms(buf: ArrayBuffer): AtomReport {
   const moov = atoms.find((a) => a.type === "moov");
   const faststart = moovIndex !== -1 && mdatIndex !== -1 && moovIndex < mdatIndex;
 
+  const counts: Record<string, number> = {};
+  for (const a of atoms) counts[a.type] = (counts[a.type] ?? 0) + 1;
+  // fragmented mp4 (fMP4): one moof per fragment carries its own index → inherently streamable.
+  const fragmented = (counts["moof"] ?? 0) > 0;
+
   return {
     atoms,
     order,
@@ -65,6 +85,8 @@ export function parseTopLevelAtoms(buf: ArrayBuffer): AtomReport {
     faststart,
     moovOffset: moov?.offset ?? -1,
     fileSize: buf.byteLength,
+    fragmented,
+    counts,
   };
 }
 

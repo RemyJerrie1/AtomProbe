@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parseTopLevelAtoms } from "./atoms";
+import { parseTopLevelAtoms, groupAtoms } from "./atoms";
 
 // Build one box: header (size big-endian + 4-byte type), rest zero-filled.
 function box(type: string, totalSize: number): Uint8Array {
@@ -50,5 +50,34 @@ describe("parseTopLevelAtoms", () => {
   it("stops safely on a broken box (size<8)", () => {
     const r = parseTopLevelAtoms(file([box("ftyp", 16)]).slice(0, 20)); // truncated
     expect(r.atoms.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("detects fragmented mp4 (moof present) and counts types", () => {
+    const r = parseTopLevelAtoms(
+      file([
+        box("ftyp", 16),
+        box("moov", 32),
+        box("moof", 24),
+        box("mdat", 64),
+        box("moof", 24),
+        box("mdat", 64),
+      ])
+    );
+    expect(r.fragmented).toBe(true);
+    expect(r.counts).toMatchObject({ ftyp: 1, moov: 1, moof: 2, mdat: 2 });
+  });
+});
+
+describe("groupAtoms", () => {
+  it("run-length encodes consecutive identical types", () => {
+    const r = parseTopLevelAtoms(
+      file([box("ftyp", 16), box("free", 16), box("free", 16), box("moov", 16), box("mdat", 16)])
+    );
+    expect(groupAtoms(r.atoms)).toEqual([
+      { type: "ftyp", count: 1 },
+      { type: "free", count: 2 },
+      { type: "moov", count: 1 },
+      { type: "mdat", count: 1 },
+    ]);
   });
 });

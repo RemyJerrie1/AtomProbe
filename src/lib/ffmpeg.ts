@@ -4,8 +4,30 @@
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 
-// Pull the core from a CDN for the fastest cold start; for prod/offline, self-host into public/ and change this.
-const CORE_BASE = "https://unpkg.com/@ffmpeg/[email protected]/dist/umd";
+// Pull the core from a CDN for the fastest cold start; for prod/offline, self-host into public/.
+// Two CDNs so a flaky/blocked unpkg falls back to jsdelivr instead of a bare "Failed to fetch".
+const CORE_BASES = [
+  "https://unpkg.com/@ffmpeg/[email protected]/dist/umd",
+  "https://cdn.jsdelivr.net/npm/@ffmpeg/[email protected]/dist/umd",
+];
+
+async function loadCoreURLs(): Promise<{ coreURL: string; wasmURL: string }> {
+  let lastErr: unknown;
+  for (const base of CORE_BASES) {
+    try {
+      const [coreURL, wasmURL] = await Promise.all([
+        toBlobURL(`${base}/ffmpeg-core.js`, "text/javascript"),
+        toBlobURL(`${base}/ffmpeg-core.wasm`, "application/wasm"),
+      ]);
+      return { coreURL, wasmURL };
+    } catch (err) {
+      lastErr = err; // try the next CDN
+    }
+  }
+  console.error("ffmpeg core load failed on all CDNs:", lastErr);
+  // App maps this code to a friendly, translated message.
+  throw new Error("CORE_LOAD_FAILED");
+}
 
 let instance: FFmpeg | null = null;
 let loading: Promise<FFmpeg> | null = null;
@@ -22,10 +44,7 @@ async function getFFmpeg(): Promise<FFmpeg> {
   loading = (async () => {
     const ff = new FFmpeg();
     ff.on("log", ({ message }) => logCb?.(message));
-    await ff.load({
-      coreURL: await toBlobURL(`${CORE_BASE}/ffmpeg-core.js`, "text/javascript"),
-      wasmURL: await toBlobURL(`${CORE_BASE}/ffmpeg-core.wasm`, "application/wasm"),
-    });
+    await ff.load(await loadCoreURLs());
     instance = ff;
     return ff;
   })().catch((err) => {

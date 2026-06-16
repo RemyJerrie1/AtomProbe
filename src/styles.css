@@ -94,15 +94,23 @@ code {
   background: #5b1d1d;
   color: #ffc9c9;
 }
+.badge.info {
+  background: #1e3a5f;
+  color: #cfe3ff;
+}
 
 .atoms {
   display: flex;
   gap: 6px;
   margin: 18px 0;
   flex-wrap: wrap;
+  max-height: 280px; /* fragmented mp4 can have many runs — cap and scroll instead of flooding the page */
+  overflow: auto;
 }
 .atom {
-  padding: 10px 14px;
+  display: inline-flex;
+  align-items: baseline;
+  padding: 8px 12px;
   border-radius: 8px;
   background: #1c2230;
   font-family: monospace;
@@ -113,6 +121,12 @@ code {
 }
 .atom.mdat {
   background: #334155;
+}
+.atom .count {
+  margin-left: 6px;
+  font-style: normal;
+  font-size: 12px;
+  opacity: 0.7;
 }
 
 .meta {
