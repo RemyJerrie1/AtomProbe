@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/RemyJerrie1/atomscope/compare/v1.1.0...v1.1.1) (2026-06-16)
+
+### Bug Fixes
+
+- **i18n:** more precise wording for fragmented mp4 messaging ([b3be4cb](https://github.com/RemyJerrie1/atomscope/commit/b3be4cb574855344e39b6e6e39d6ed33b4ed0911))
+
 # [1.1.0](https://github.com/RemyJerrie1/atomscope/compare/v1.0.0...v1.1.0) (2026-06-16)
 
 ### Features
