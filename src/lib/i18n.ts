@@ -14,8 +14,9 @@ const dict = {
     privacy: "Runs entirely in your browser. Your file is never uploaded.",
     drop: "Choose / drop an .mp4",
     parseError: "Could not parse this file — make sure it's an mp4.",
-    faststartOk: "✓ faststart (streams / plays instantly)",
-    faststartBad: "✗ not faststart (must download to the end before it plays)",
+    faststartOk:
+      "✓ Faststart — moov precedes mdat; plays while downloading (progressive streaming)",
+    faststartBad: "✗ Not faststart — moov trails mdat; playback must wait for a full download",
     faststartFrag: "ℹ️ Fragmented mp4 (fMP4) — stream-ready by design",
     fragNote:
       "Each fragment embeds its own index (moof), so a fragmented mp4 supports progressive streaming as-is. +faststart applies only to non-fragmented files (single moov).",
@@ -40,8 +41,8 @@ const dict = {
     privacy: "全程在你的瀏覽器執行,檔案不會上傳。",
     drop: "選擇 / 拖入 .mp4",
     parseError: "無法解析這個檔案,請確認是 mp4。",
-    faststartOk: "✓ 已 faststart(可串流秒起播)",
-    faststartBad: "✗ 未 faststart(要先載到檔尾才起播)",
+    faststartOk: "✓ 已 faststart — moov 在 mdat 之前,可邊下載邊播放(漸進式串流)",
+    faststartBad: "✗ 未 faststart — moov 在 mdat 之後,須完整下載後才能播放",
     faststartFrag: "ℹ️ 分段式 mp4(fMP4)— 結構上原生支援串流",
     fragNote:
       "分段式 mp4 的每個 fragment 內含自身索引(moof),本身即支援漸進式串流;+faststart 僅適用於非分段(單一 moov)的檔案。",
