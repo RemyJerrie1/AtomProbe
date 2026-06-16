@@ -1,5 +1,7 @@
 # 🔬 Atomscope
 
+**English · [中文](README.zh-TW.md)**
+
 ![CI](https://github.com/RemyJerrie1/atomscope/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)
 ![React](https://img.shields.io/badge/React-19-61dafb)
