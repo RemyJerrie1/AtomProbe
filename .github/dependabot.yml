@@ -11,6 +11,11 @@ updates:
         dependency-type: "development"
       prod-dependencies:
         dependency-type: "production"
+    # Only auto-PR minor/patch. Majors (Vite/TS/ESLint/Vitest etc.) are breaking
+    # and must be upgraded deliberately one at a time, not as a 13-package batch.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
   # GitHub Actions versions
   - package-ecosystem: "github-actions"
     directory: "/"
