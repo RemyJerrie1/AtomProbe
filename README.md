@@ -8,6 +8,8 @@
 
 > Inspect an mp4's atom layout, see whether it's **faststart**, and re-mux **`+faststart`** in one click — **100% in the browser, nothing uploaded.** · **Live demo:** <https://atomscope.vercel.app/>
 
+![Atomscope analyzing a fragmented mp4 — atom runs, faststart verdict, moov offset](docs/screen.png)
+
 ## ✨ Highlights
 
 - ⚡ **One-click `+faststart` re-mux, fully in-browser** — real ffmpeg.wasm, `-c copy` (lossless), **zero upload, zero backend**.

@@ -8,6 +8,8 @@
 
 > 檢視 mp4 的 atom 結構、判斷是不是 **faststart**,並一鍵 re-mux 加上 **`+faststart`** —— **全程在瀏覽器、檔案不上傳。** · **線上 demo:** <https://atomscope.vercel.app/>
 
+![Atomscope 解析一支分段式 mp4 —— atom 分組、faststart 判定、moov 位置](docs/screen.png)
+
 ## ✨ 亮點
 
 - ⚡ **一鍵 `+faststart` re-mux,全在瀏覽器** —— 真的 ffmpeg.wasm,`-c copy`(無損)、**零上傳、零後端**。
