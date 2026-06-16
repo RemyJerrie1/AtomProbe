@@ -6,7 +6,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)
 ![React](https://img.shields.io/badge/React-19-61dafb)
 
-> Inspect an mp4's atom layout, see whether it's **faststart**, and re-mux **`+faststart`** in one click — **100% in the browser, nothing uploaded.** · **Live demo:** _(pending)_
+> Inspect an mp4's atom layout, see whether it's **faststart**, and re-mux **`+faststart`** in one click — **100% in the browser, nothing uploaded.** · **Live demo:** <https://atomscope.vercel.app/>
 
 ## ✨ Highlights
 

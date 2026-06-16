@@ -6,7 +6,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)
 ![React](https://img.shields.io/badge/React-19-61dafb)
 
-> 檢視 mp4 的 atom 結構、判斷是不是 **faststart**,並一鍵 re-mux 加上 **`+faststart`** —— **全程在瀏覽器、檔案不上傳。** · **線上 demo:** _(待部署)_
+> 檢視 mp4 的 atom 結構、判斷是不是 **faststart**,並一鍵 re-mux 加上 **`+faststart`** —— **全程在瀏覽器、檔案不上傳。** · **線上 demo:** <https://atomscope.vercel.app/>
 
 ## ✨ 亮點
 
