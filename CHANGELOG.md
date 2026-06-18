@@ -1,3 +1,9 @@
+# [1.2.0](https://github.com/RemyJerrie1/atomscope/compare/v1.1.2...v1.2.0) (2026-06-18)
+
+### Features
+
+- theme color switcher (4 accent presets, persisted) ([0bd5b07](https://github.com/RemyJerrie1/atomscope/commit/0bd5b072346db506fcc4a678ef61a529328a794f))
+
 ## [1.1.2](https://github.com/RemyJerrie1/atomscope/compare/v1.1.1...v1.1.2) (2026-06-16)
 
 ### Bug Fixes
