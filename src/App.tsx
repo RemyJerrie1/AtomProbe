@@ -3,8 +3,16 @@ import { parseTopLevelAtoms, groupAtoms, humanSize, type AtomReport } from "./li
 import { addFaststart, setFfmpegLog } from "./lib/ffmpeg";
 import { useI18n } from "./lib/i18n";
 
+const THEMES = [
+  { id: "indigo", dot: "#6aa3ff" },
+  { id: "emerald", dot: "#34d399" },
+  { id: "amber", dot: "#fbbf24" },
+  { id: "rose", dot: "#fb7185" },
+];
+
 export default function App() {
   const { lang, toggle, t } = useI18n("en");
+  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "indigo");
   const [file, setFile] = useState<File | null>(null);
   const [report, setReport] = useState<AtomReport | null>(null);
   const [busy, setBusy] = useState(false);
@@ -19,6 +27,11 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = lang;
   }, [lang]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   async function onFile(f: File) {
     setError("");
@@ -60,9 +73,23 @@ export default function App() {
       <header>
         <div className="topbar">
           <h1>🔬 Atomscope</h1>
-          <button className="lang" onClick={toggle} aria-label="Switch language">
-            {lang === "en" ? "中文" : "EN"}
-          </button>
+          <div className="controls">
+            <div className="themes" role="group" aria-label="Theme color">
+              {THEMES.map((tm) => (
+                <button
+                  key={tm.id}
+                  className="swatch"
+                  style={{ background: tm.dot }}
+                  aria-label={`Theme ${tm.id}`}
+                  aria-pressed={theme === tm.id}
+                  onClick={() => setTheme(tm.id)}
+                />
+              ))}
+            </div>
+            <button className="lang" onClick={toggle} aria-label="Switch language">
+              {lang === "en" ? "中文" : "EN"}
+            </button>
+          </div>
         </div>
         <p className="sub">
           {t("tagline")}
