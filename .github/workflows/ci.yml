@@ -1,7 +1,7 @@
 name: CI
 on:
   push:
-    branches: [dev]
+    branches: [dev, uat, prod]
   pull_request:
 
 jobs:
@@ -19,14 +19,15 @@ jobs:
       - run: npm run build
       - run: npm run metrics:size
 
+  # Release only on prod, then backmerge prod -> uat -> dev so lower branches don't drift.
   release:
     needs: quality
-    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/prod'
     runs-on: ubuntu-latest
     permissions:
-      contents: write # create tags, releases, push CHANGELOG
-      issues: write # comment on released issues
-      pull-requests: write # comment on released PRs
+      contents: write # tags, releases, push CHANGELOG + backmerge
+      issues: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,3 +39,14 @@ jobs:
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: backmerge prod -> uat -> dev
+        run: |
+          git config user.name github-actions
+          git config user.email actions@github.com
+          git fetch origin
+          for b in uat dev; do
+            git checkout "$b"
+            git merge origin/prod --no-edit
+            git push origin "$b"
+          done
+          # ponytail: conflict -> step fails, resolve by hand; no bot-PR until it actually hurts
