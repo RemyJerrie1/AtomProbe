@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { parseTopLevelAtoms, groupAtoms, humanSize, type AtomReport } from "./lib/atoms";
 import { addFaststart, setFfmpegLog } from "./lib/ffmpeg";
 import { useI18n } from "./lib/i18n";
+import { OfflineBadge } from "./components/OfflineBadge";
+import { InstallButton } from "./components/InstallButton";
 
 const THEMES = [
   { id: "indigo", dot: "#6aa3ff" },
@@ -72,8 +74,10 @@ export default function App() {
     <main className="wrap">
       <header>
         <div className="topbar">
-          <h1>🔬 Atomscope</h1>
+          <h1>🔬 AtomProbe</h1>
           <div className="controls">
+            <OfflineBadge lang={lang} />
+            <InstallButton lang={lang} />
             <div className="themes" role="group" aria-label="Theme color">
               {THEMES.map((tm) => (
                 <button
