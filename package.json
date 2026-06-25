@@ -6,7 +6,7 @@
   "description": "Visualize an mp4's top-level atom order, flag faststart, and one-click re-mux +faststart — 100% in the browser.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/RemyJerrie1/atomscope.git"
+    "url": "https://github.com/RemyJerrie1/AtomProbe.git"
   },
   "scripts": {
     "dev": "vite",
@@ -15,8 +15,8 @@
     "test": "vitest",
     "test:run": "vitest run",
     "lint": "eslint .",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src",
     "metrics:size": "node scripts/report-assets.mjs",
     "metrics:lhci": "lhci autorun",
     "prepare": "husky"
