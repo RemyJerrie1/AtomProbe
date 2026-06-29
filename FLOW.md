@@ -7,7 +7,7 @@ flowchart TB
   RP -->|you merge| REL["tag + GitHub Release + CHANGELOG"]:::ci
   DEV -->|release/uat-* PR + CI| UAT["uat"]:::br
   UAT -->|release/prod-* PR + CI| PROD["prod"]:::br
-  PROD ==>|Vercel auto| LIVE(["production · atomscope.vercel.app"]):::dep
+  PROD ==>|Vercel auto| LIVE(["production · atomprobe.vercel.app"]):::dep
   DEV & UAT -. push .-> PREV(["Vercel preview"]):::dep
   UAT -. CI opens .-> BMU{{"backmerge PR → dev"}}:::man
   PROD -. CI opens .-> BMP{{"backmerge PR → uat, dev"}}:::man
