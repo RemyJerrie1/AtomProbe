@@ -33,6 +33,8 @@ const dict = {
     logLoad: "Loading ffmpeg…",
     logDone: "Done — faststart version downloaded.",
     remuxFail: "Re-mux failed: ",
+    offline: "⚡ Offline",
+    install: "⬇ Install",
     footer:
       "How it works: moov is the index a player needs to demux. Moved to the front, the player learns every frame's byte offset from the first few KB and uses HTTP Range Requests to stream only what it plays. -c copy means no re-encode and no quality loss.",
   },
@@ -58,6 +60,8 @@ const dict = {
     logLoad: "載入 ffmpeg…",
     logDone: "完成!已下載 faststart 版本。",
     remuxFail: "re-mux 失敗:",
+    offline: "⚡ 離線模式",
+    install: "⬇ 安裝",
     footer:
       "原理:moov 是解封裝必需的索引。搬到檔頭後,播放器從前幾 KB 就知道每個 frame 的 byte 位置,用 HTTP Range Request 只抓要播的片段、邊載邊播。-c copy 不重編、不損畫質。",
   },
