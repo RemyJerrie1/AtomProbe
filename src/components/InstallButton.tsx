@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Lang } from "../lib/i18n";
+import type { TKey } from "../lib/i18n";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -7,12 +7,12 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 interface InstallButtonProps {
-  lang: Lang;
+  t: (key: TKey) => string;
   /** Demo override — leave undefined in production. */
   forceVisible?: boolean;
 }
 
-export function InstallButton({ lang, forceVisible }: InstallButtonProps) {
+export function InstallButton({ t, forceVisible }: InstallButtonProps) {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [hovered, setHovered] = useState(false);
 
@@ -71,7 +71,7 @@ export function InstallButton({ lang, forceVisible }: InstallButtonProps) {
         fontWeight: "normal",
       }}
     >
-      {lang === "en" ? "⬇ Install" : "⬇ 安裝"}
+      {t("install")}
     </button>
   );
 }
