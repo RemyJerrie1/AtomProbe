@@ -4,6 +4,20 @@
 
 - theme color switcher (4 accent presets, persisted) ([0bd5b07](https://github.com/RemyJerrie1/atomscope/commit/0bd5b072346db506fcc4a678ef61a529328a794f))
 
+## [1.3.1](https://github.com/RemyJerrie1/AtomProbe/compare/v1.3.0...v1.3.1) (2026-06-26)
+
+
+### Bug Fixes
+
+* rename package name atomscope to atomprobe ([#10](https://github.com/RemyJerrie1/AtomProbe/issues/10)) ([53064f8](https://github.com/RemyJerrie1/AtomProbe/commit/53064f8f61f7076b988bec45fc5e764cac61a326))
+
+## [1.3.0](https://github.com/RemyJerrie1/AtomProbe/compare/v1.2.0...v1.3.0) (2026-06-25)
+
+
+### Features
+
+* **phase-2:** add PWA OfflineBadge + InstallButton + Tauri detection ([d57bfa8](https://github.com/RemyJerrie1/AtomProbe/commit/d57bfa806716e547b65e8a576734bf3919f84f7e))
+
 ## [1.1.2](https://github.com/RemyJerrie1/atomscope/compare/v1.1.1...v1.1.2) (2026-06-16)
 
 ### Bug Fixes
