@@ -44,15 +44,13 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,wasm}"],
+        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+        globIgnores: ["**/ffmpeg-core*", "**/*.wasm"],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         runtimeCaching: [
           {
             urlPattern: /\.wasm$/,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "wasm-cache",
-              expiration: { maxEntries: 5, maxAgeSeconds: 60 * 60 * 24 * 30 },
-            },
+            handler: "NetworkOnly",
           },
         ],
       },
