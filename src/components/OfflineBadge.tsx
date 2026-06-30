@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import type { Lang } from "../lib/i18n";
+import type { TKey } from "../lib/i18n";
 
 interface OfflineBadgeProps {
-  lang: Lang;
+  t: (key: TKey) => string;
   /** Demo override — leave undefined in production. */
   forceOffline?: boolean;
 }
 
 const AMBER = "#fbbf24";
 
-export function OfflineBadge({ lang, forceOffline }: OfflineBadgeProps) {
-  const [isOffline, setIsOffline] = useState(false);
+export function OfflineBadge({ t, forceOffline }: OfflineBadgeProps) {
+  const [isOffline, setIsOffline] = useState(() =>
+    typeof navigator !== "undefined" ? !navigator.onLine : false
+  );
 
   useEffect(() => {
     if (forceOffline !== undefined) return;
@@ -54,7 +56,7 @@ export function OfflineBadge({ lang, forceOffline }: OfflineBadgeProps) {
           boxShadow: `0 0 5px ${AMBER}`,
         }}
       />
-      {lang === "en" ? "⚡ Offline" : "⚡ 離線模式"}
+      {t("offline")}
     </span>
   );
 }

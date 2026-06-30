@@ -76,8 +76,8 @@ export default function App() {
         <div className="topbar">
           <h1>🔬 AtomProbe</h1>
           <div className="controls">
-            <OfflineBadge lang={lang} />
-            <InstallButton lang={lang} />
+            <OfflineBadge t={t} />
+            <InstallButton t={t} />
             <div className="themes" role="group" aria-label="Theme color">
               {THEMES.map((tm) => (
                 <button
