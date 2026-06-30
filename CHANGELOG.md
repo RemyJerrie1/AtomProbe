@@ -4,6 +4,13 @@
 
 - theme color switcher (4 accent presets, persisted) ([0bd5b07](https://github.com/RemyJerrie1/atomscope/commit/0bd5b072346db506fcc4a678ef61a529328a794f))
 
+## [1.3.2](https://github.com/RemyJerrie1/AtomProbe/compare/v1.3.1...v1.3.2) (2026-06-30)
+
+
+### Bug Fixes
+
+* i18n t() prop + OfflineBadge navigator.onLine init + FLOW.md URL ([#13](https://github.com/RemyJerrie1/AtomProbe/issues/13)) ([d5c3646](https://github.com/RemyJerrie1/AtomProbe/commit/d5c3646a6137f9b02e076bc30a812ade8876c309))
+
 ## [1.3.1](https://github.com/RemyJerrie1/AtomProbe/compare/v1.3.0...v1.3.1) (2026-06-26)
 
 
