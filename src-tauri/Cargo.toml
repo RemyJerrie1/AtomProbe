@@ -16,3 +16,8 @@ tauri-build = { version = "2", features = [] }
 tauri = { version = "2", features = [] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+
+# Transitive dep of tauri (via wry/tao) — time 0.3.37+ changed Format::parse's
+# signature, breaking cookie 0.18.1's call site. Pin below the break until
+# cookie releases a fix.
+time = "=0.3.36"
