@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0d1117"/>
+  <!-- nucleus -->
+  <circle cx="256" cy="256" r="28" fill="#e6edf3"/>
+  <!-- electron orbit 1 (horizontal ellipse) -->
+  <ellipse cx="256" cy="256" rx="160" ry="56" fill="none" stroke="#58a6ff" stroke-width="12"/>
+  <!-- electron orbit 2 (rotated 60°) -->
+  <ellipse cx="256" cy="256" rx="160" ry="56" fill="none" stroke="#58a6ff" stroke-width="12" transform="rotate(60 256 256)"/>
+  <!-- electron orbit 3 (rotated 120°) -->
+  <ellipse cx="256" cy="256" rx="160" ry="56" fill="none" stroke="#58a6ff" stroke-width="12" transform="rotate(120 256 256)"/>
+  <!-- electrons -->
+  <circle cx="416" cy="256" r="16" fill="#79c0ff"/>
+  <circle cx="176" cy="161" r="16" fill="#79c0ff"/>
+  <circle cx="176" cy="351" r="16" fill="#79c0ff"/>
+</svg>
