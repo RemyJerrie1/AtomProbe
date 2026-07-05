@@ -1,7 +1,7 @@
 {
   "name": "atomprobe",
   "private": true,
-  "version": "1.4.0",
+  "version": "1.4.1",
   "type": "module",
   "description": "Visualize an mp4's top-level atom order, flag faststart, and one-click re-mux +faststart — 100% in the browser.",
   "repository": {
