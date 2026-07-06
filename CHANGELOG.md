@@ -4,6 +4,15 @@
 
 - theme color switcher (4 accent presets, persisted) ([0bd5b07](https://github.com/RemyJerrie1/atomscope/commit/0bd5b072346db506fcc4a678ef61a529328a794f))
 
+## [1.4.1](https://github.com/RemyJerrie1/AtomProbe/compare/v1.4.0...v1.4.1) (2026-07-05)
+
+
+### Bug Fixes
+
+* convert Tauri icons to RGBA PNG (tauri requires alpha channel) ([#42](https://github.com/RemyJerrie1/AtomProbe/issues/42)) ([52f8157](https://github.com/RemyJerrie1/AtomProbe/commit/52f81573cd39befecc7a2f1bcee7bcb1b412b2da))
+* pin time crate to 0.3.36 — cookie 0.18.1 breaks on time 0.3.37+ API change ([#40](https://github.com/RemyJerrie1/AtomProbe/issues/40)) ([b0250b1](https://github.com/RemyJerrie1/AtomProbe/commit/b0250b1964e51ecf940dde900032b24678b976d7))
+* run tauri icon in CI before build — iconPath was not a real tauri-action input ([#43](https://github.com/RemyJerrie1/AtomProbe/issues/43)) ([5ee45ff](https://github.com/RemyJerrie1/AtomProbe/commit/5ee45ff3345dbbfeca9ef6f6d86f70a5a426fe2a))
+
 ## [1.4.0](https://github.com/RemyJerrie1/AtomProbe/compare/v1.3.2...v1.4.0) (2026-07-01)
 
 
