@@ -36,6 +36,9 @@ jobs:
       - name: Build frontend
         run: npm run build
 
+      - name: Generate Tauri icons (icns/ico/png) from source SVG
+        run: npx tauri icon public/favicon.svg
+
       - uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -49,5 +52,4 @@ jobs:
             > `xattr -d com.apple.quarantine AtomProbe.dmg`
           releaseDraft: true
           prerelease: false
-          iconPath: public/favicon.svg
           args: ${{ matrix.args }}

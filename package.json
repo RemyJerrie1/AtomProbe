@@ -1,7 +1,7 @@
 {
   "name": "atomprobe",
   "private": true,
-  "version": "1.4.0",
+  "version": "1.4.1",
   "type": "module",
   "description": "Visualize an mp4's top-level atom order, flag faststart, and one-click re-mux +faststart — 100% in the browser.",
   "repository": {
@@ -30,6 +30,7 @@
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@lhci/cli": "^0.15.1",
+    "@tauri-apps/cli": "^2.11.4",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vite-pwa/assets-generator": "^1.0.2",
