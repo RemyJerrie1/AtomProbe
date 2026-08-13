@@ -13,6 +13,18 @@
 
 ![AtomProbe analyzing a fragmented mp4 — atom runs, faststart verdict, moov offset](docs/screen.png)
 
+<a href="./docs/media/product-overview.mp4"><img src="./docs/media/product-overview.gif" width="760" alt="AtomProbe local MP4 atom analysis and faststart verdict" /></a>
+
+## Business and engineering value
+
+| Audience | What this demonstrates |
+|---|---|
+| Executive / product | A specialist media-debugging task turned into a private, one-click utility with web and desktop distribution |
+| Staff engineering | Binary parsing, browser isolation headers, WASM media processing, offline PWA design, and explicit architecture trade-offs |
+| Hiring | A narrow problem taken through UX, implementation, quality gates, performance budgets, CI, and packaged releases |
+
+**Privacy boundary:** media bytes stay on the user's device. The app has no upload API or backend processing path.
+
 ## Highlights
 
 - **One-click `+faststart` re-mux, fully in-browser** — real ffmpeg.wasm, `-c copy` (lossless), zero upload, zero backend.
