@@ -1,0 +1,56 @@
+:root {
+  color-scheme: dark;
+  --color-canvas: #0b0e14;
+  --color-surface: #141925;
+  --color-surface-raised: #1c2230;
+  --color-border: #283044;
+  --color-text: #e6e9ef;
+  --color-text-muted: #9aa3b2;
+  --color-accent: #6aa3ff;
+  --color-accent-strong: #8b6aff;
+  --color-success-surface: #0f3322;
+  --color-success-text: #9af6c0;
+  --color-success-border: #1c6b46;
+  --color-danger-surface: #3a1620;
+  --color-danger-text: #ffc0cb;
+  --color-danger-border: #7a2740;
+  --color-info-surface: #14283f;
+  --color-info-text: #cfe3ff;
+  --color-info-border: #2d5586;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --radius-sm: 5px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+  --shadow-action: 0 6px 18px rgb(106 163 255 / 25%);
+  --duration-fast: 120ms;
+  --duration-normal: 150ms;
+  --bg: var(--color-canvas);
+  --surface: var(--color-surface);
+  --surface-2: var(--color-surface-raised);
+  --border: var(--color-border);
+  --text: var(--color-text);
+  --muted: var(--color-text-muted);
+  --accent: var(--color-accent);
+  --accent-2: var(--color-accent-strong);
+}
+:root[data-theme="emerald"] {
+  --color-accent: #34d399;
+  --color-accent-strong: #10b981;
+}
+:root[data-theme="amber"] {
+  --color-accent: #fbbf24;
+  --color-accent-strong: #f59e0b;
+}
+:root[data-theme="rose"] {
+  --color-accent: #fb7185;
+  --color-accent-strong: #f43f5e;
+}

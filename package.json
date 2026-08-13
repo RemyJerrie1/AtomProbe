@@ -19,9 +19,12 @@
     "format:check": "prettier --check src",
     "metrics:size": "node scripts/report-assets.mjs",
     "metrics:lhci": "lhci autorun",
+    "check:design-system": "node scripts/check-design-system.mjs",
+    "sync:ffmpeg-core": "node scripts/sync-ffmpeg-core.mjs",
     "prepare": "husky"
   },
   "dependencies": {
+    "@ffmpeg/core": "0.12.6",
     "@ffmpeg/ffmpeg": "^0.12.10",
     "@ffmpeg/util": "^0.12.1",
     "react": "^19.0.0",

@@ -4,6 +4,7 @@ import { addFaststart, setFfmpegLog } from "./lib/ffmpeg";
 import { useI18n } from "./lib/i18n";
 import { OfflineBadge } from "./components/OfflineBadge";
 import { InstallButton } from "./components/InstallButton";
+import { ActionButton, StatusBadge, Surface } from "./design-system/primitives";
 
 const THEMES = [
   { id: "indigo", dot: "#6aa3ff" },
@@ -127,13 +128,13 @@ export default function App() {
             .join(tooMany ? " · " : " → ");
           const isKey = (ty: string) => (ty === "moov" ? "moov" : ty === "mdat" ? "mdat" : "");
           return (
-            <section className="report">
+            <Surface className="report">
               {report.fragmented ? (
-                <div className="badge info">{t("faststartFrag")}</div>
+                <StatusBadge tone="info">{t("faststartFrag")}</StatusBadge>
               ) : (
-                <div className={`badge ${report.faststart ? "ok" : "bad"}`}>
+                <StatusBadge tone={report.faststart ? "success" : "danger"}>
                   {report.faststart ? t("faststartOk") : t("faststartBad")}
-                </div>
+                </StatusBadge>
               )}
 
               <div className="atoms">
@@ -155,12 +156,12 @@ export default function App() {
               {report.fragmented ? (
                 <p className="muted">{t("fragNote")}</p>
               ) : (
-                <button onClick={remux} disabled={busy}>
+                <ActionButton onClick={remux} disabled={busy}>
                   {busy ? t("btnBusy") : report.faststart ? t("btnRemux") : t("btnReady")}
-                </button>
+                </ActionButton>
               )}
               {log && <pre className="log">{log}</pre>}
-            </section>
+            </Surface>
           );
         })()}
 

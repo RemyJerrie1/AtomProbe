@@ -2,33 +2,13 @@
 // Uses the single-thread core (only coreURL/wasmURL, no workerURL) → no SharedArrayBuffer + COOP/COEP needed,
 // so it can be deployed as pure static files with no cross-origin isolation. A single -c copy re-mux is fast enough single-threaded.
 import { FFmpeg } from "@ffmpeg/ffmpeg";
-import { fetchFile, toBlobURL } from "@ffmpeg/util";
+import { fetchFile } from "@ffmpeg/util";
 
-// Pull the core from a CDN for the fastest cold start; for prod/offline, self-host into public/.
-// Two CDNs so a flaky/blocked unpkg falls back to jsdelivr instead of a bare "Failed to fetch".
-const CORE_BASES = [
-  "https://unpkg.com/@ffmpeg/[email protected]/dist/umd",
-  "https://cdn.jsdelivr.net/npm/@ffmpeg/[email protected]/dist/umd",
-];
+const coreURL = new URL("/vendor/ffmpeg-core.js", window.location.origin).href;
+const wasmURL = new URL("/vendor/ffmpeg-core.wasm", window.location.origin).href;
 
-async function loadCoreURLs(): Promise<{ coreURL: string; wasmURL: string }> {
-  let lastErr: unknown;
-  for (const base of CORE_BASES) {
-    try {
-      const [coreURL, wasmURL] = await Promise.all([
-        toBlobURL(`${base}/ffmpeg-core.js`, "text/javascript"),
-        toBlobURL(`${base}/ffmpeg-core.wasm`, "application/wasm"),
-      ]);
-      return { coreURL, wasmURL };
-    } catch (err) {
-      lastErr = err; // try the next CDN
-    }
-  }
-  console.error("ffmpeg core load failed on all CDNs:", lastErr);
-  // App maps this code to a friendly, translated message.
-  throw new Error("CORE_LOAD_FAILED");
-}
-
+// The pinned single-thread core is copied from @ffmpeg/core into public/vendor.
+// Remux therefore has no runtime CDN dependency and remains compatible with the PWA boundary.
 let instance: FFmpeg | null = null;
 let loading: Promise<FFmpeg> | null = null;
 let logCb: ((message: string) => void) | null = null;
@@ -44,7 +24,7 @@ async function getFFmpeg(): Promise<FFmpeg> {
   loading = (async () => {
     const ff = new FFmpeg();
     ff.on("log", ({ message }) => logCb?.(message));
-    await ff.load(await loadCoreURLs());
+    await ff.load({ coreURL, wasmURL });
     instance = ff;
     return ff;
   })().catch((err) => {
